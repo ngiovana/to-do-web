@@ -1,0 +1,53 @@
+:root {
+  --red-12: #65142E;
+  --red-11: #CD185D;
+  --red-10: #EC3D75;
+  --red-9: #FB4B80;
+  --red-8: #E593A3;
+  --red-7: #EEABB7;
+  --red-6: #F7BEC8;
+  --red-5: #FDCED6;
+  --red-4: #FFDBE2;
+  --red-3: #FFE9ED;
+  --red-2-2: #fcf3f4;
+  --red-2: #FFF7F8;
+  --red-1: #FFFCFD;
+  
+  --purple-dark: #5E60CE;
+  --purple: #8284FA;
+
+  --danger: #E25858;
+
+  --green: #65960b;
+
+  --gray-12: #1E1F24;
+  --gray-11: #62636C;
+  --gray-10: #80828D;
+  --gray-9: #8B8D98;
+  --gray-8: #B9BBC6;
+  --gray-7: #CDCED7;
+  --gray-6: #D8D9E0;
+  --gray-5: #E0E1E6;
+  --gray-4: #E7E8EC;
+  --gray-3: #EFF0F3;
+  --gray-2: #F9F9FB;
+  --gray-1: #fefeff;
+}
+
+:focus {
+  outline: transparent;
+  box-shadow: 0 0 0 1.3px var(--red-9);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: 0;
+  font-smooth: antialiased;
+}
+
+body, input, textarea, button {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 1rem;
+}
