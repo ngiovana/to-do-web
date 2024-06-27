@@ -1,9 +1,9 @@
 import { FastifyInstance, FastifyPluginOptions, FastifyRequest, FastifyReply } from 'fastify'
 
-import { CreateUserController } from './controllers/CreateUserController'
-import { ListUsersController } from './controllers/ListUsersController'
-import { DeleteUserController } from  './controllers/DeleteUserController'
-import { UpdateUserController } from  './controllers/UpdateUserController'
+import { CreateUserController } from './controllers/users/CreateUserController'
+import { ListUsersController } from './controllers/users/ListUsersController'
+import { DeleteUserController } from  './controllers/users/DeleteUserController'
+import { UpdateUserController } from  './controllers/users/UpdateUserController'
 
 export async function routes(fastify: FastifyInstance, options: FastifyPluginOptions) {
 
