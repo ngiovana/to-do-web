@@ -1,4 +1,4 @@
-import prismaClient from '../prisma'
+import prismaClient from '../prisma/index'
 
 interface CreateUserProps {
   name: string;
@@ -12,8 +12,6 @@ class CreateUserService {
     if (!name || !email || !password) {
       throw new Error('Preencha todos os campos')
     }
-
-    console.log('aqui')
 
     const user = await prismaClient.user.create({
       data: {
