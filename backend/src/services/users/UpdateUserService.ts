@@ -29,7 +29,7 @@ class UpdateUserService {
 
     const user = await prismaClient.user.update({
       where: {
-        id
+        id: findUser.id
       },
       data: {
         name,
