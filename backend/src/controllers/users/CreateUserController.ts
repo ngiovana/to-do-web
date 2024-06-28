@@ -6,9 +6,12 @@ class CreateUserController {
     const { name, email, password } = request.body as { name: string, email: string, password: string }
 
     const userService = new CreateUserService()
-    const user = await userService.execute({ name, email, password })
-
-    reply.send(user)
+    try {
+      const user = await userService.execute({ name, email, password })
+      reply.send(user)
+    } catch (error: any) {
+      throw new Error(error.message)
+    }
   }
 }
 

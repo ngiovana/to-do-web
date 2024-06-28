@@ -1,7 +1,6 @@
 import { createContext, useContext, useState, ReactNode, Dispatch, SetStateAction } from 'react'
 import { api } from '../services/api';
 import { useNavigate } from 'react-router-dom';
-import { AxiosResponse } from 'axios';
 
 interface UserProps {
   id?: string,
@@ -36,13 +35,13 @@ export function UserProvider({ children }: UserProviderProps) {
     if (!user || !user.name || !user.email || !user.password) throw new Error('Todos os campos devem ser preenchidos')
 
     try {
-      const response: AxiosResponse<UserProps> = await api.post('/user', user)
+      const response = await api.post('/user', user)
       const newUser = response.data
 
       setUsers([...users, newUser])
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error creating user:', error)
-      throw new Error('Erro ao criar usuário: ' + error)
+      throw new Error(error.response.data.message || 'Erro ao criar usuário')
     }
   }
 

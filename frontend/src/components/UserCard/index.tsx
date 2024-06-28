@@ -1,12 +1,19 @@
 import { CaretUp } from "@phosphor-icons/react";
 import { Avatar, UserCardContainer, UserCardHeader, UserCardContent } from "./styles";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "../../context/userContext";
 
 interface UserCardProps {
   isActive: boolean;
 }
 
 export function UserCard({ isActive }: UserCardProps) {
+  const { logoutUser } = useUser()
+
+  const handleLogout = () => {
+    logoutUser()
+  }
+
   const navigate = useNavigate()
   
   return (
@@ -21,7 +28,7 @@ export function UserCard({ isActive }: UserCardProps) {
 
       <UserCardContent>
         <p onClick={() => navigate('/usuario/editar')}>Editar</p>
-        <p onClick={() => navigate('/login')}>Sair</p>
+        <p onClick={handleLogout}>Sair</p>
       </UserCardContent>
     </UserCardContainer>
   )
