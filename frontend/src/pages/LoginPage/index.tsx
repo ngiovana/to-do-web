@@ -16,7 +16,7 @@ export function LoginPage() {
         </ImageLabelContainer>
       </ImageContainer>
 
-      <CreateAccountFormComponent onLoginClick={() => setIsCreateAccount(false)} onConfirm={() => setIsCreateAccount(false)} headerTitle='Bem-vindo ao ToDo' headerSubtitle='Crie sua conta!' isActive={isCreateAccount} />
+      <CreateAccountFormComponent onLoginClick={() => setIsCreateAccount(false)} headerTitle='Bem-vindo ao ToDo' headerSubtitle='Crie sua conta!' isActive={isCreateAccount} />
       <LoginFormComponent onCreateClick={() => setIsCreateAccount(true)} isActive={!isCreateAccount}/>
     </LoginPageContainer>
   )

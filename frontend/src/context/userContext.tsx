@@ -1,5 +1,7 @@
-import React, { createContext, useContext, useState, ReactNode, Dispatch, SetStateAction } from 'react'
+import { createContext, useContext, useState, ReactNode, Dispatch, SetStateAction } from 'react'
 import { api } from '../services/api';
+import { useNavigate } from 'react-router-dom';
+import { AxiosResponse } from 'axios';
 
 interface UserProps {
   id?: string,
@@ -19,6 +21,7 @@ interface UserContextType {
   createUser: (user: UserProps) => void;
   updateUser: (user: UserProps) => void;
   loginUser: (email: string, password: string) => void;
+  logoutUser: () => void;
 }
 
 export const UserContext = createContext<UserContextType | undefined>(undefined)
@@ -27,8 +30,20 @@ export function UserProvider({ children }: UserProviderProps) {
   const [users, setUsers] = useState<UserProps[]>([])
   const [userLogged, setUserLogged] = useState('')
 
-  const createUser = (user: UserProps) => {
-    setUsers([...users, user])
+  const navigate = useNavigate()
+
+  const createUser = async (user: UserProps) => {
+    if (!user || !user.name || !user.email || !user.password) throw new Error('Todos os campos devem ser preenchidos')
+
+    try {
+      const response: AxiosResponse<UserProps> = await api.post('/user', user)
+      const newUser = response.data
+
+      setUsers([...users, newUser])
+    } catch (error) {
+      console.error('Error creating user:', error)
+      throw new Error('Erro ao criar usuário: ' + error)
+    }
   }
 
   const updateUser = (user: UserProps) => {
@@ -42,16 +57,24 @@ export function UserProvider({ children }: UserProviderProps) {
   }
 
   const loginUser = async (email: string, password: string) => {
-    const response = await api.post('/user/login', { 
-      email, 
-      password 
-    })
+    // adicionar validação nas rotas com o userLogged
+    try {
+      const response = await api.post('/user/login', { 
+        email, 
+        password 
+      })
+  
+      if (response.data) return response.data.id;
+      throw new Error('Email ou senha inválidos')
+    } catch (error) {
+      console.error(error)
+      throw new Error('Erro ao logar usuário: ' + error)
+    }
+  }
 
-    console.log(response.data)
-
-    if (response.data) return response.data.user.id;
-
-    throw new Error('Email ou senha inválidos')
+  const logoutUser = () => {
+    setUserLogged('')
+    navigate('/login')
   }
 
   const value = {
@@ -61,6 +84,7 @@ export function UserProvider({ children }: UserProviderProps) {
     createUser,
     updateUser,
     loginUser,
+    logoutUser,
   }
 
   return (

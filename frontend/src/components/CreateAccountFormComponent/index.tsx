@@ -1,18 +1,68 @@
+import { ChangeEvent, useState } from "react";
+import { useUser } from "../../context/userContext";
 import { InputContainer } from "../InputContainer";
 import { CreateAccountSection, LoginForm, LoginFormContainer, LoginFormHeader } from "./styles";
+import { useNavigate } from "react-router-dom";
 
 interface CreateAccountFormComponentProps {
   onLoginClick?: () => void,
-  onConfirm: () => void,
-  name?: string,
-  email?: string,
-  password?: string,
+  nameProp?: string,
+  emailProp?: string,
+  passwordProp?: string,
   headerTitle: string,
   headerSubtitle: string,
   isActive: boolean;
 }
 
-export function CreateAccountFormComponent({ onLoginClick, onConfirm, headerTitle, headerSubtitle, name, email, password, isActive }: CreateAccountFormComponentProps) {
+export function CreateAccountFormComponent({ onLoginClick, headerTitle, headerSubtitle, nameProp, emailProp, passwordProp, isActive }: CreateAccountFormComponentProps) {
+  const [name, setName] = useState(nameProp || '')
+  const [email, setEmail] = useState(emailProp ||'')
+  const [password, setPassword] = useState(passwordProp || '')
+
+  const navigate = useNavigate()
+
+  const { createUser } = useUser()
+
+  const handleNameChange = (event: ChangeEvent<HTMLInputElement>) => {
+    event.target.setCustomValidity('')
+
+    setName(event.target.value)
+  }
+
+  const handleEmailChange = (event: ChangeEvent<HTMLInputElement>) => {
+    event.target.setCustomValidity('')
+
+    setEmail(event.target.value)
+  }
+
+  const handlePasswordChange = (event: ChangeEvent<HTMLInputElement>) => {
+    event.target.setCustomValidity('')
+
+    setPassword(event.target.value)
+  }
+
+  const handleCreateAccount = async (event: ChangeEvent<HTMLFormElement>) => {
+    event.preventDefault()
+
+    if (!name || !email || !password) {
+      alert('Preencha todos os campos')
+      return
+    }
+
+    try {
+      await createUser({name, email, password})
+      if (onLoginClick) {
+        onLoginClick()
+        alert('Conta criada com sucesso')
+      } else {
+        navigate('/')
+      }
+    } catch (error) {
+      console.error(error)
+      alert(error)
+    }
+  }
+
   const handleLinkClick = () => {
     if (onLoginClick) onLoginClick();
   }
@@ -23,12 +73,12 @@ export function CreateAccountFormComponent({ onLoginClick, onConfirm, headerTitl
         <h1>{headerTitle}</h1>
         <h2>{headerSubtitle}</h2>
       </LoginFormHeader>
-      <LoginForm>
-        <InputContainer title='Nome' type='text' value={name} />
-        <InputContainer title='E-mail' type='email' value={email} />
-        <InputContainer title='Senha' type='password' value={password}/>
+      <LoginForm onSubmit={handleCreateAccount}>
+        <InputContainer title='Nome' type='text' value={name} onChange={handleNameChange}/>
+        <InputContainer title='E-mail' type='email' value={email} onChange={handleEmailChange}/>
+        <InputContainer title='Senha' type='password' value={password} onChange={handlePasswordChange}/>
 
-        <button type="submit" onClick={onConfirm}>Confirmar</button>
+        <button type="submit">Confirmar</button>
       </LoginForm>
       
       {onLoginClick && 

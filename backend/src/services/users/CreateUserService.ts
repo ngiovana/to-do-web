@@ -13,6 +13,16 @@ class CreateUserService {
       throw new Error('Preencha todos os campos')
     }
 
+    const userExist = await prismaClient.user.findFirst({
+      where: {
+        email
+      }
+    })
+
+    if (userExist) {
+      throw new Error('Já existe um usuário com esse email')
+    }
+
     const user = await prismaClient.user.create({
       data: {
         name,

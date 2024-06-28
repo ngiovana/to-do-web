@@ -9,9 +9,9 @@ export function UserEdit({ user_id }) {
     <EditUserContainer>
       <EdisUserCard>
         <CreateAccountFormComponent 
-          email='giovana_niehues@hotmail.com' 
-          name='Giovana Niehues' 
-          password='123456'
+          emailProp='giovana_niehues@hotmail.com' 
+          nameProp='Giovana Niehues' 
+          passwordProp='123456'
           headerTitle='Olá Giovana!'
           headerSubtitle='Atualize suas informações'
           onConfirm={() => navigate('/')}
