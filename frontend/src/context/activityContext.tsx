@@ -22,6 +22,7 @@ interface ActivityContextType {
   updateActivity: (activity: ActivityProps) => void;
   deleteActivity: (id: string) => string;
   getActivity: (id: string) => void;
+  getActivities:(userId: string) => any;
 }
 
 export const ActivityContext = createContext<ActivityContextType | undefined>(undefined)
@@ -79,6 +80,21 @@ export function ActivityProvider({ children }: ActivityProviderProps) {
     navigate('/login')
   }
 
+  const getActivities = async (userId: string) => {
+    console.log('getActivities')
+    if (!userId ) throw new Error('Usuário não encontrado')
+
+    try {
+      const response = await api.get(`/activities?userId=${userId}`)
+      const activitiesList = response.data
+      setActivities(activitiesList)
+      return activitiesList
+    } catch (error) {
+      console.error(error)
+      throw new Error('Erro ao buscar atividades: ' + error)
+    }
+  }
+
   const value = {
     createActivity,
     updateActivity,
@@ -87,7 +103,8 @@ export function ActivityProvider({ children }: ActivityProviderProps) {
     activities,
     setActivities,
     currentActivityId,
-    setCurrentActivityId
+    setCurrentActivityId,
+    getActivities
   }
 
   return (

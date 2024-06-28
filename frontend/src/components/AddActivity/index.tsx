@@ -10,7 +10,7 @@ export function AddActivty() {
 
   const { userLogged } = useUser()
 
-  const currentUser = localStorage.getItem('currentUser') || userLogged
+  const userId = localStorage.getItem('userLogged') || userLogged
 
   const { createActivity,setCurrentActivityId, activities, setActivities } = useActivity()
 
@@ -34,7 +34,7 @@ export function AddActivty() {
         throw new Error('Informe um título')
       }
 
-      const newActivity = await createActivity({ title, userId: currentUser })
+      const newActivity = await createActivity({ title, userId })
       setCurrentActivityId(newActivity.id)
       localStorage.setItem('currentActivityId', newActivity.id)
       setActivities([...activities, newActivity])

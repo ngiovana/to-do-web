@@ -4,6 +4,10 @@ interface MenuContainerProps {
   expanded: boolean;
 }
 
+interface ItemContainerProps {
+  isActive: boolean;
+}
+
 export const MenuContainer = styled.div<MenuContainerProps>`
   display: flex;
   flex-direction: column;
@@ -76,7 +80,7 @@ export const DoItem = styled.h1`
   color: var(--red-11);
 `
 
-export const ItemContainer = styled.div`
+export const ItemContainer = styled.div<ItemContainerProps>`
   display: flex;
   flex-direction: row;
   gap: 0.5rem;
