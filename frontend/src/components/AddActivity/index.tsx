@@ -1,19 +1,47 @@
 import { PlusCircle } from "@phosphor-icons/react";
 import { AddItemContainer, InputContainer } from "./styles";
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
+import { useActivity } from "../../context/activityContext";
+import { useUser } from "../../context/userContext";
 
 export function AddActivty() {
   const [showActivtyInput, setShowActivivtyInput] = useState(false)
+  const [title, setTitle] = useState('')
+
+  const { userLogged } = useUser()
+
+  const currentUser = localStorage.getItem('currentUser') || userLogged
+
+  const { createActivity,setCurrentActivityId, activities, setActivities } = useActivity()
+
+  const handleTitleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    event.target.setCustomValidity('')
+
+    setTitle(event.target.value)
+  }
 
   const handleAddActivityClick = () => {
     setShowActivivtyInput(true)
     console.log('Add activity clicked')
   }
 
-  const handleCreateActivity = () => {
+  const handleCreateActivity = async (event: ChangeEvent<HTMLInputElement>) => {
+    event.preventDefault()
+
     setShowActivivtyInput(false)
-    console.log('Create activity clicked')
-    // adicionar item na lista
+    try {
+      if (title === '') {
+        throw new Error('Informe um título')
+      }
+
+      const newActivity = await createActivity({ title, userId: currentUser })
+      setCurrentActivityId(newActivity.id)
+      localStorage.setItem('currentActivityId', newActivity.id)
+      setActivities([...activities, newActivity])
+      // qualquer coisa dar um reload no window pra carregar a lista atualizada
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   return (
@@ -21,9 +49,9 @@ export function AddActivty() {
       {showActivtyInput ? (
         <>
           <InputContainer>
-            <form>
-              <input placeholder='Título da atividade...'/>
-              <button onClick={handleCreateActivity}>Ok</button>
+            <form onSubmit={handleCreateActivity}>
+              <input placeholder='Título da atividade...' value={title} onChange={handleTitleChange}/>
+              <button type='submit'>Ok</button>
             </form>
           </InputContainer>
         </>
