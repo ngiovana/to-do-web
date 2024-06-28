@@ -21,7 +21,9 @@ export function CreateAccountFormComponent({ onLoginClick, headerTitle, headerSu
 
   const navigate = useNavigate()
 
-  const { createUser } = useUser()
+  const { createUser, updateUser, userLogged } = useUser()
+
+  const currentUserId = localStorage.getItem('userLogged') || userLogged
 
   const handleNameChange = (event: ChangeEvent<HTMLInputElement>) => {
     event.target.setCustomValidity('')
@@ -50,12 +52,14 @@ export function CreateAccountFormComponent({ onLoginClick, headerTitle, headerSu
     }
 
     try {
-      await createUser({name, email, password})
       if (onLoginClick) {
+        await createUser({name, email, password})
         onLoginClick()
         alert('Conta criada com sucesso')
       } else {
+        await updateUser({id: currentUserId, name, email, password})
         navigate('/')
+        alert('Informações atualizadas com sucesso')
       }
     } catch (error) {
       console.error(error)

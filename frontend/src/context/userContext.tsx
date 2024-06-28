@@ -19,7 +19,7 @@ interface UserContextType {
   setUserLogged: Dispatch<SetStateAction<string>>;
   createUser: (user: UserProps) => void;
   updateUser: (user: UserProps) => void;
-  loginUser: (email: string, password: string) => void;
+  loginUser: (email: string, password: string) => string;
   logoutUser: () => void;
 }
 
@@ -45,14 +45,14 @@ export function UserProvider({ children }: UserProviderProps) {
     }
   }
 
-  const updateUser = (user: UserProps) => {
-    const updatedUsers = users.map(u => {
-      if (u.id === user.id) {
-        return user;
-      }
-      return u;
-    });
-    setUsers(updatedUsers);
+  const updateUser = async (user: UserProps) => {
+    try {
+      const response = await api.put(`/user?id=${user.id}`, user)
+      if (response.data) return response.data.id;
+    } catch (error) {
+      console.error(error)
+      throw new Error('Erro ao atualizar usuário: ' + error)
+    }
   }
 
   const loginUser = async (email: string, password: string) => {
@@ -73,6 +73,7 @@ export function UserProvider({ children }: UserProviderProps) {
 
   const logoutUser = () => {
     setUserLogged('')
+    localStorage.removeItem('userLogged')
     navigate('/login')
   }
 

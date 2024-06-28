@@ -37,6 +37,7 @@ export function LoginFormComponent({ onCreateClick, isActive }: LoginFormCompone
 
       // flash com mensagem de login bem sucedido
       setUserLogged(userId)
+      localStorage.setItem('userLogged', userId)
       navigate('/')
     } catch (error) {
       console.error(error)
