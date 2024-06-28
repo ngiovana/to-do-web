@@ -34,6 +34,8 @@ export const ImageContainer = styled.div<ImageContainerProps>`
   img {
     display: flex;
     margin: 10% auto 0 auto;
+    width: 90%;
+    max-width: 45rem;
   }
 `
 
@@ -41,9 +43,12 @@ export const ImageLabelContainer = styled.div`
   display: flex;
   flex-direction: column;
 
+  width: 90%;
+
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
+  margin: 0 auto;
 
   h1 {
     color: var(--red-11);
@@ -52,5 +57,9 @@ export const ImageLabelContainer = styled.div`
 
   p {
     color: var(--gray-11);
+  }
+
+  @media (max-height: 520px) {
+    font-size: 0.8rem;
   }
 `

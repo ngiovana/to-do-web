@@ -1,6 +1,7 @@
 import { FastifyInstance, FastifyPluginOptions, FastifyRequest, FastifyReply } from 'fastify'
 
 import { CreateUserController } from './controllers/users/CreateUserController'
+import { LoginUserController } from './controllers/users/LoginUserController'
 import { ListUsersController } from './controllers/users/ListUsersController'
 import { DeleteUserController } from  './controllers/users/DeleteUserController'
 import { UpdateUserController } from  './controllers/users/UpdateUserController'
@@ -22,6 +23,10 @@ export async function routes(fastify: FastifyInstance, options: FastifyPluginOpt
   // User routes
   fastify.post('/user', async (request: FastifyRequest, reply: FastifyReply) => {
     return new CreateUserController().handle(request, reply)
+  })
+
+  fastify.post('/user/login', async (request: FastifyRequest, reply: FastifyReply) => {
+    return new LoginUserController().handle(request, reply)
   })
 
   fastify.get('/users', async (request: FastifyRequest, reply: FastifyReply) => {
