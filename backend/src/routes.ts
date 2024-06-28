@@ -11,6 +11,12 @@ import { ListActivitiesController } from './controllers/activities/ListActivitie
 import { UpdateActivityController } from './controllers/activities/UpdateActivityController'
 import { DeleteActivityController } from './controllers/activities/DeleteActivityController'
 
+import { CreateTaskController } from './controllers/tasks/CreateTaskController'
+import { GetTaskController } from './controllers/tasks/GetTaskController'
+import { ListTasksController } from './controllers/tasks/ListTasksController'
+import { UpdateTaskController } from './controllers/tasks/UpdateTaskController'
+import { DeleteTaskController } from './controllers/tasks/DeleteTaskController'
+
 export async function routes(fastify: FastifyInstance, options: FastifyPluginOptions) {
 
   // User routes
@@ -52,4 +58,23 @@ export async function routes(fastify: FastifyInstance, options: FastifyPluginOpt
   })
 
   // Task routes
+  fastify.post('/task', async (request: FastifyRequest, reply: FastifyReply) => {
+    return new CreateTaskController().handle(request, reply)
+  })
+
+  fastify.get('/task', async (request: FastifyRequest, reply: FastifyReply) => {
+    return new GetTaskController().handle(request, reply)
+  })
+
+  fastify.get('/tasks', async (request: FastifyRequest, reply: FastifyReply) => {
+    return new ListTasksController().handle(request, reply)
+  })
+
+  fastify.put('/task', async (request: FastifyRequest, reply: FastifyReply) => {
+    return new UpdateTaskController().handle(request, reply)
+  })
+
+  fastify.delete('/task', async (request: FastifyRequest, reply: FastifyReply) => {
+    return new DeleteTaskController().handle(request, reply)
+  })
 }

@@ -12,6 +12,10 @@ class GetActivityService {
       }
     })
 
+    if (!activity) {
+      throw new Error("Atividade não encontrada")
+    }
+
     return activity
   }
 }
