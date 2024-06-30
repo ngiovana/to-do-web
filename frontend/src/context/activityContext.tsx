@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, ReactNode, Dispatch, SetStateAction } from 'react'
+import { createContext, useContext, useState, ReactNode, Dispatch, SetStateAction, useEffect } from 'react'
 import { api } from '../services/api';
 import { useNavigate } from 'react-router-dom';
 
@@ -59,19 +59,16 @@ export function ActivityProvider({ children }: ActivityProviderProps) {
     }
   }
 
-  const deleteActivity = async (email: string, password: string) => {
-    // adicionar validação nas rotas com o userLogged
+  const deleteActivity = async (id: string, userId: string) => {
     try {
-      const response = await api.post('/user/login', { 
-        email, 
-        password 
-      })
+      const response = await api.delete(`/activity?id=${id}&userId=${userId}`)
+      console.log(response)
   
-      if (response.data) return response.data.id;
-      throw new Error('Email ou senha inválidos')
+      if (response.data) return response.data;
+      throw new Error('Erro ao deletar atividade')
     } catch (error) {
       console.error(error)
-      throw new Error('Erro ao logar usuário: ' + error)
+      throw new Error('Erro ao deletar atividade: ' + error)
     }
   }
 
@@ -106,6 +103,14 @@ export function ActivityProvider({ children }: ActivityProviderProps) {
     setCurrentActivityId,
     getActivities
   }
+
+  useEffect(() => {
+    const userId = localStorage.getItem('userLogged')
+
+    if (userId) {
+      getActivities(userId)
+    }
+  }, [])
 
   return (
     <ActivityContext.Provider value={value}>
