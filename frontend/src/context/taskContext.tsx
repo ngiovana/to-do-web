@@ -15,6 +15,7 @@ interface TaskContextType {
   activityTasks: TaskProps[];
   setActivityTasks: Dispatch<SetStateAction<TaskProps[]>>;
   getActivityTasks: (activityId: string) => any;
+  checkTask: (id: string, title: string, status: boolean, activityId: string) => any;
   createTask: (activity: TaskProps) => any;
   deleteTask: (id: string) => string;
 }
@@ -49,12 +50,37 @@ export function TaskProvider({ children }: TaskProviderProps) {
     }
   }
 
+  const deleteTask = async (id: string, activityId: string) => {
+    try {
+      const response = await api.delete(`/task?id=${id}&activityId=${activityId}`)
+      const deletedTask = response.data
+
+      return deletedTask
+    } catch (error) {
+      console.error('Error deleting task:', error)
+      throw new Error('Erro ao deletar Tarefa')
+    }
+  }
+
+  const checkTask = async (id: string, title: string, status: boolean, activityId: string) => {
+    try {
+      const response = await api.put(`/task?id=${id}`, {id, title, status, activityId})
+      const updatedTask = response.data
+
+      return updatedTask
+    } catch (error) {
+      console.error('Error deleting task:', error)
+      throw new Error('Erro ao deletar Tarefa')
+    }
+  }
+
   const value = {
     // activityTasks,
     // setActivityTasks,
     getActivityTasks,
+    checkTask,
     createTask,
-    // deleteTask,
+    deleteTask,
   }
 
   return (

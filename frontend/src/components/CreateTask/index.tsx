@@ -11,15 +11,16 @@ import { useActivity } from '../../context/activityContext';
 export interface TaskType {
   id: number;
   title: string;  
-  done: boolean;
+  status: boolean;
 }
 
 export function CreateTask() {
   const [tasks, setTasks] = useState<TaskType[]>([]);
   const [newTaskText, setNewTaskText] = useState('');
+  const [reloadTasks, setReloadTasks] = useState(false)
   const taskCounter = tasks.length;
 
-  const { createTask, getActivityTasks } = useTask()
+  const { createTask, getActivityTasks, deleteTask, checkTask } = useTask()
   const { currentActivity } = useActivity()
 
   useEffect(() => {
@@ -30,10 +31,10 @@ export function CreateTask() {
       if (tasksList) setTasks(tasksList)
     }
     fetchData()
-  }, [currentActivity])
+  }, [currentActivity, reloadTasks])
 
   const checkedTasksCounter = tasks.reduce((prevValue, currentTask) => {
-    if (currentTask.done) {
+    if (currentTask.status) {
       return prevValue + 1
     }
 
@@ -46,16 +47,10 @@ export function CreateTask() {
     if (!newTaskText) {
       return
     }
-
-    const newTask: TaskType = {
-      id: new Date().getTime(),
-      title: newTaskText,
-      done: false,
-    }
     
-    setTasks((state) => [...state, newTask]);
     try {
-      const createNewTask = await createTask({title: newTaskText, status: false}, currentActivity.id)
+      const newTask = await createTask({title: newTaskText, status: false}, currentActivity.id)
+      setTasks((state) => [...state, newTask]);
     } catch (error) {
       console.log(error)
     }
@@ -69,26 +64,25 @@ export function CreateTask() {
     setNewTaskText(event.target.value);
   }
   
-  function handleRemoveTask(id: number) {
-    const filteredTasks = tasks.filter((task) => task.id !== id)
-
+  async function handleRemoveTask(id: number) {
     if (!confirm('Deseja mesmo apagar essa tarefa?')) {
       return
     }
-
-    setTasks(filteredTasks)
+    try {
+      await deleteTask(id, currentActivity.id)
+      setReloadTasks(!reloadTasks)
+    } catch (error) {
+      console.log(error)
+    }
   }
 
-  function handleToggleTask({ id, value }: { id: number; value: boolean }) {
-    const updatedTasks = tasks.map((task) => {
-      if (task.id === id) {
-        return { ...task, done: value }
-      }
-
-      return { ...task }
-    })
-
-    setTasks(updatedTasks)
+  async function handleToggleTask({ id, title, status }: { id: number; title: string; status: boolean }) {
+    try {
+      await checkTask(id, title, status, currentActivity.id)
+      setReloadTasks(!reloadTasks)
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (

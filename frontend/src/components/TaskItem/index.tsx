@@ -7,23 +7,24 @@ import styles from './TaskItem.module.css'
 interface Props {
   data: TaskType
   removeTask: (id: number) => void
-  toggleTaskStatus: ({ id, value }: { id: number; value: boolean }) => void
+  toggleTaskStatus: ({ id, title, status }: { id: number; title: string; status: boolean }) => void
 }
 
 export function TaskItem({ data, removeTask, toggleTaskStatus }: Props) {
+  console.log(data)
   function handleTaskToggle() {
-    console.log(data.done)
-    toggleTaskStatus({ id: data.id, value: !data.done })
+    console.log(data.status)
+    toggleTaskStatus({ id: data.id, title: data.title, status: !data.status })
   }
 
   function handleRemove() {
     removeTask(data.id)
   }
 
-  const checkboxCheckedClassname = data.done
+  const checkboxCheckedClassname = data.status
     ? styles['checkbox-checked']
     : styles['checkbox-unchecked']
-  const paragraphCheckedClassname = data.done
+  const paragraphCheckedClassname = data.status
     ? styles['paragraph-checked']
     : ''
 
@@ -31,9 +32,9 @@ export function TaskItem({ data, removeTask, toggleTaskStatus }: Props) {
     <div className={styles.container}>
       <div>
         <label htmlFor="checkbox" onClick={handleTaskToggle}>
-          <input readOnly type="checkbox" checked={data.done} />
+          <input readOnly type="checkbox" checked={data.status} />
           <span className={`${styles.checkbox} ${checkboxCheckedClassname}`}>
-            {data.done && <Check size={12} />}
+            {data.status && <Check size={12} />}
           </span>
 
           <p className={`${styles.paragraph} ${paragraphCheckedClassname}`}>
