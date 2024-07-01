@@ -5,14 +5,13 @@ import { useActivity } from "../../context/activityContext";
 import { useUser } from "../../context/userContext";
 
 export function AddActivty() {
-  const [showActivtyInput, setShowActivivtyInput] = useState(false)
+  // const [showActivtyInput, setShowActivivtyInput] = useState(false)
   const [title, setTitle] = useState('')
 
   const { userLogged } = useUser()
+  const { createActivity, setCurrentActivity, activities, setActivities, showActivtyInput, setShowActivivtyInput } = useActivity()
 
   const userId = localStorage.getItem('userLogged') || userLogged
-
-  const { createActivity,setCurrentActivityId, activities, setActivities } = useActivity()
 
   const handleTitleChange = (event: ChangeEvent<HTMLInputElement>) => {
     event.target.setCustomValidity('')
@@ -35,7 +34,7 @@ export function AddActivty() {
       }
 
       const newActivity = await createActivity({ title, userId })
-      setCurrentActivityId(newActivity.id)
+      setCurrentActivity(newActivity)
       localStorage.setItem('currentActivityId', newActivity.id)
       setActivities([...activities, newActivity])
       // qualquer coisa dar um reload no window pra carregar a lista atualizada

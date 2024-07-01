@@ -11,11 +11,11 @@ function App() {
   return (
     <div className={styles.background}>
       <BrowserRouter>
-        <UserProvider>
-          <ActivityProvider>
+        <ActivityProvider>
+          <UserProvider>
             <Router />
-          </ActivityProvider>
-        </UserProvider>
+          </UserProvider>
+        </ActivityProvider>
       </BrowserRouter> 
     </div>
   )

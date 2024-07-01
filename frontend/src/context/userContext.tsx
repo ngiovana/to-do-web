@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, ReactNode, Dispatch, SetStateAction } from 'react'
 import { api } from '../services/api';
 import { useNavigate } from 'react-router-dom';
+import { useActivity } from './activityContext';
 
 interface UserProps {
   id?: string,
@@ -28,6 +29,8 @@ export const UserContext = createContext<UserContextType | undefined>(undefined)
 export function UserProvider({ children }: UserProviderProps) {
   const [users, setUsers] = useState<UserProps[]>([])
   const [userLogged, setUserLogged] = useState('')
+
+  const { setActivities, setCurrentActivity } = useActivity()
 
   const navigate = useNavigate()
 
@@ -73,6 +76,8 @@ export function UserProvider({ children }: UserProviderProps) {
 
   const logoutUser = () => {
     setUserLogged('')
+    setActivities([])
+    setCurrentActivity(undefined)
     localStorage.removeItem('userLogged')
     navigate('/login')
   }

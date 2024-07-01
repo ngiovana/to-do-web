@@ -7,18 +7,18 @@ import { useActivity } from '../../context/activityContext'
 import { useUser } from '../../context/userContext'
 
 export function SideMenu() {
-  const [isExpanded, setIsExpanded] = useState(false)
+  // const [isExpanded, setIsExpanded] = useState(false)
   const [updateActivityList, setUpdateActivityList] = useState(false)
 
   const { userLogged } = useUser()
-  const { activities, setCurrentActivityId, currentActivityId, getActivities, setActivities, deleteActivity } = useActivity()
+  const { activities, setCurrentActivity, currentActivity, getActivities, setActivities, deleteActivity, isMenuExpanded, setIsMenuExpanded } = useActivity()
 
   const userId = localStorage.getItem('userLogged') || userLogged
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const activitiesList = await getActivities(userId || '')
+        await getActivities(userId || '')
       } catch (error) {
         console.log(error)
       }
@@ -39,18 +39,18 @@ export function SideMenu() {
   }
 
   return (
-    <MenuContainer expanded={isExpanded}>
-      { !isExpanded && <List size={22} onClick={() => setIsExpanded(true)}/> }
+    <MenuContainer expanded={isMenuExpanded}>
+      { !isMenuExpanded && <List size={22} onClick={() => setIsMenuExpanded(true)}/> }
 
       
-        {isExpanded && (
+        {isMenuExpanded && (
           <>
             <MenuHeader>
               <TodoContainer>
                 <ToItem>to</ToItem>
                 <DoItem>Do</DoItem>
               </TodoContainer>
-              <CaretDoubleLeft size={15} weight='bold' onClick={() => setIsExpanded(false)}/>
+              <CaretDoubleLeft size={15} weight='bold' onClick={() => setIsMenuExpanded(false)}/>
             </MenuHeader>
 
             <AddActivty />
@@ -59,8 +59,8 @@ export function SideMenu() {
             {activities.map((activity) => ( 
               <ItemContainer
                 key={activity.id}
-                isActive={currentActivityId === activity.id}
-                onClick={() => setCurrentActivityId(activity.id)}
+                isActive={currentActivity.id === activity.id}
+                onClick={() => setCurrentActivity(activity)}
               >
                 <Circle size={6} weight='fill' />
                 <p>{activity.title}</p>

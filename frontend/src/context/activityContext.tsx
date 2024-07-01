@@ -6,7 +6,7 @@ interface ActivityProps {
   id?: string,
   title: string,
   description?: string,
-  deadeline?: Date
+  deadline?: Date
 }
 
 interface ActivityProviderProps {
@@ -16,20 +16,26 @@ interface ActivityProviderProps {
 interface ActivityContextType {
   activities: ActivityProps[];
   setActivities: Dispatch<SetStateAction<ActivityProps[]>>;
-  currentActivityId: string;
-  setCurrentActivityId: Dispatch<SetStateAction<string>>;
+  currentActivity: ActivityProps;
+  setCurrentActivity: Dispatch<SetStateAction<ActivityProps>>;
   createActivity: (activity: ActivityProps) => any;
   updateActivity: (activity: ActivityProps) => void;
   deleteActivity: (id: string) => string;
   getActivity: (id: string) => void;
   getActivities:(userId: string) => any;
+  showActivtyInput: boolean;
+  setShowActivivtyInput: Dispatch<SetStateAction<boolean>>;
+  isMenuExpanded: boolean;
+  setIsMenuExpanded: Dispatch<SetStateAction<boolean>>;
 }
 
 export const ActivityContext = createContext<ActivityContextType | undefined>(undefined)
 
 export function ActivityProvider({ children }: ActivityProviderProps) {
   const [activities, setActivities] = useState<ActivityProps[]>([])
-  const [currentActivityId, setCurrentActivityId] = useState('')
+  const [currentActivity, setCurrentActivity] = useState('')
+  const [showActivtyInput, setShowActivivtyInput] = useState(false)
+  const [isMenuExpanded, setIsMenuExpanded] = useState(false)
 
   const navigate = useNavigate()
 
@@ -73,8 +79,7 @@ export function ActivityProvider({ children }: ActivityProviderProps) {
   }
 
   const getActivity = () => {
-    localStorage.removeItem('userLogged')
-    navigate('/login')
+    console.log('getActivity')
   }
 
   const getActivities = async (userId: string) => {
@@ -99,9 +104,13 @@ export function ActivityProvider({ children }: ActivityProviderProps) {
     getActivity,
     activities,
     setActivities,
-    currentActivityId,
-    setCurrentActivityId,
-    getActivities
+    currentActivity,
+    setCurrentActivity,
+    getActivities,
+    showActivtyInput,
+    setShowActivivtyInput,
+    isMenuExpanded,
+    setIsMenuExpanded
   }
 
   useEffect(() => {

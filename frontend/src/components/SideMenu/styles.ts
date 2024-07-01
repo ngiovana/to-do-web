@@ -98,7 +98,7 @@ export const ItemContainer = styled.div<ItemContainerProps>`
   cursor: pointer;
 
   p {
-    color: var(--gray-9);
+    color: ${props => props.isActive ? 'var(--red-9)' : 'var(--gray-9)'};
 
     font-size: 0.9rem;
     // font-weight: bold;
@@ -108,7 +108,7 @@ export const ItemContainer = styled.div<ItemContainerProps>`
   }
 
   svg {
-    color: var(--gray-10);
+    color: ${props => props.isActive ? 'var(--red-9)' : 'var(--gray-10)'};
     width: 0.5rem;
   }
 

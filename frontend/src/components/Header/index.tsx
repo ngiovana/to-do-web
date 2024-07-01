@@ -1,11 +1,24 @@
+import { useActivity } from '../../context/activityContext';
 import { ActivityInfoHeader } from '../ActivityInfoHeader/index';
+import { AddFirstActivity } from '../AddFirstActivity';
 import { ProfileHeader } from '../ProfileHeader';
 import { HeaderContainer } from './styles'
 
 export function Header() {
+  const { currentActivity, activities, setCurrentActivity } = useActivity()
+  
+  if (!currentActivity && activities) {
+    setCurrentActivity(activities[0])
+  }
+
   return (
     <HeaderContainer>
-      <ActivityInfoHeader title='Item 1' description='Testando descrição' data='02/10/2024' />
+      {currentActivity ? 
+        <ActivityInfoHeader title={currentActivity.title} description={currentActivity.description || ''} data={currentActivity.deadline} />
+      :
+        <AddFirstActivity />
+      }
+      
       <ProfileHeader />
     </HeaderContainer>
   );

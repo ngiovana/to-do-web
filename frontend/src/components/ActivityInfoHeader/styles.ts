@@ -12,10 +12,25 @@ export const ActivityInfoContainer = styled.div`
   gap: 0.3rem;
 `
 
+export const TitleContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+
+  svg {
+    color: var(--gray-8);
+  }
+
+  svg:hover {
+    color: var(--gray-9);
+  }
+`
+
 export const ActivityTitle = styled.h1`
   color: var(--red-12);
   font-weight: bold;
   font-size: 2.5rem;
+  max-width: 30rem;
   font-family: Archivo Black, sans-serif;
 `
 

@@ -1,31 +1,37 @@
 import { useState } from 'react'
-import { ActivityDescriptionView, ActivityTitle, ActivityDataView, ActivityInfoContainer, ActivityDescriptionInput } from './styles'
+import { PencilSimple } from '@phosphor-icons/react'
+import { ActivityDescriptionView, ActivityTitle, ActivityDataView, ActivityInfoContainer, ActivityDescriptionInput, TitleContainer } from './styles'
 
 interface ActivityInfoHeaderProps {
   title: string,
   description: string,
-  data: string,
+  deadline: Date,
 }
 
-export function ActivityInfoHeader({ title, description, data }: ActivityInfoHeaderProps) {
-  const [isEditingDescription, setIsEditingDescription] = useState(false)
+export function ActivityInfoHeader({ title, description, deadline }: ActivityInfoHeaderProps) {
   const [isEditingData, setIsEditingData] = useState(false)
 
   const handleChangeDescription = () => {
     console.log('change description')
-    setIsEditingDescription(false)
+    // setIsEditingDescription(false)
   }
 
   return (
     <ActivityInfoContainer>
-      <ActivityTitle>{title}</ActivityTitle>
-      {isEditingDescription ? (
+      <TitleContainer>
+        <ActivityTitle>{title}</ActivityTitle>
+        <PencilSimple size={16} style={{ cursor: 'pointer' }}  onClick={() => setIsEditingData(true)} weight='bold' />
+      </TitleContainer>
+      {isEditingData ? (
         <ActivityDescriptionInput value={description} onChange={handleChangeDescription} />
       ) : (
-        <ActivityDescriptionView onClick={() => setIsEditingDescription(true)}>{description}</ActivityDescriptionView>
+        <>
+          <ActivityDescriptionView>{description}</ActivityDescriptionView>
+          <ActivityDataView>{'Prazo: ' + deadline}</ActivityDataView>
+        </>
       )}
       
-      <ActivityDataView onClick={() => setIsEditingData(true)}>{'Prazo: ' + data}</ActivityDataView>
+      
     </ActivityInfoContainer>
   )
 }
