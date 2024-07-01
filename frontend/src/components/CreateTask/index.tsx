@@ -50,7 +50,8 @@ export function CreateTask() {
     
     try {
       const newTask = await createTask({title: newTaskText, status: false}, currentActivity.id)
-      setTasks((state) => [...state, newTask]);
+      setTasks((state) => [...state, newTask])
+      checkActivityStatus()
     } catch (error) {
       console.log(error)
     }
@@ -70,6 +71,7 @@ export function CreateTask() {
     }
     try {
       await deleteTask(id, currentActivity.id)
+      checkActivityStatus()
       setReloadTasks(!reloadTasks)
     } catch (error) {
       console.log(error)
@@ -80,28 +82,32 @@ export function CreateTask() {
     try {
       await checkTask(id, title, status, currentActivity.id)
 
-      if (taskCounter === checkedTasksCounter) {
-        const updatedActivity = await updateActivity({
-          id: currentActivity.id,
-          title: currentActivity.title, 
-          description: currentActivity.description, 
-          status: false, 
-          deadline: currentActivity.deadline, 
-        }, localStorage.getItem('userLogged'))
-        setCurrentActivity(updatedActivity)
-      } else if (taskCounter !== checkedTasksCounter && currentActivity.status === false) {
-        const updatedActivity = await updateActivity({
-          id: currentActivity.id,
-          title: currentActivity.title, 
-          description: currentActivity.description, 
-          status: true, 
-          deadline: currentActivity.deadline, 
-        }, localStorage.getItem('userLogged'))
-        setCurrentActivity(updatedActivity)
-      }
+      checkActivityStatus()
       setReloadTasks(!reloadTasks)
     } catch (error) {
       console.log(error)
+    }
+  }
+
+  async function checkActivityStatus() {
+    if (taskCounter === checkedTasksCounter) {
+      const updatedActivity = await updateActivity({
+        id: currentActivity.id,
+        title: currentActivity.title, 
+        description: currentActivity.description, 
+        status: false, 
+        deadline: currentActivity.deadline, 
+      }, localStorage.getItem('userLogged'))
+      setCurrentActivity(updatedActivity)
+    } else if (taskCounter !== checkedTasksCounter && currentActivity.status === false) {
+      const updatedActivity = await updateActivity({
+        id: currentActivity.id,
+        title: currentActivity.title, 
+        description: currentActivity.description, 
+        status: true, 
+        deadline: currentActivity.deadline, 
+      }, localStorage.getItem('userLogged'))
+      setCurrentActivity(updatedActivity)
     }
   }
 
