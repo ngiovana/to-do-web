@@ -1,5 +1,5 @@
 import { ChangeEvent, useState } from 'react'
-import { PencilSimple, X } from '@phosphor-icons/react'
+import { Check, PencilSimple, X } from '@phosphor-icons/react'
 import { ActivityDescriptionView, ActivityTitle, ActivityInfoContainer, TitleContainer, ActivityInput } from './styles'
 import { useActivity } from '../../context/activityContext'
 import { useUser } from '../../context/userContext'
@@ -7,11 +7,12 @@ import { useUser } from '../../context/userContext'
 interface ActivityInfoHeaderProps {
   id: string
   title: string,
+  status: boolean,
   description: string,
   deadline: Date,
 }
 
-export function ActivityInfoHeader({ id, title, description, deadline }: ActivityInfoHeaderProps) {
+export function ActivityInfoHeader({ id, title, description, status, deadline }: ActivityInfoHeaderProps) {
   const [isEditingData, setIsEditingData] = useState(false)
   const [showEditActivity, setShowEditActivity] = useState(false)
   const [activityDescription, setActivityDescription] = useState(description || '')
@@ -54,6 +55,7 @@ export function ActivityInfoHeader({ id, title, description, deadline }: Activit
         {/* { !isEditingData && <PencilSimple size={16} style={{ cursor: 'pointer' }} onClick={() => setIsEditingData(true)} weight='bold' />}
         { isEditingData && <X size={16} style={{ cursor: 'pointer' }} onClick={() => setIsEditingData(false)} weight='bold'/>} */}
         <ActivityTitle>{title}</ActivityTitle>
+        { status && <Check color='#65960b' weight='bold' size={24} />}
       </TitleContainer>
       {isEditingData ? (
         <>

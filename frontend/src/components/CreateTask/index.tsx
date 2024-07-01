@@ -21,7 +21,7 @@ export function CreateTask() {
   const taskCounter = tasks.length;
 
   const { createTask, getActivityTasks, deleteTask, checkTask } = useTask()
-  const { currentActivity } = useActivity()
+  const { currentActivity, updateActivity, setCurrentActivity } = useActivity()
 
   useEffect(() => {
     async function fetchData() {
@@ -76,9 +76,29 @@ export function CreateTask() {
     }
   }
 
-  async function handleToggleTask({ id, title, status }: { id: number; title: string; status: boolean }) {
+  async function handleToggleTask({ id, title, status }: { id: string; title: string; status: boolean }) {
     try {
       await checkTask(id, title, status, currentActivity.id)
+
+      if (taskCounter === checkedTasksCounter) {
+        const updatedActivity = await updateActivity({
+          id: currentActivity.id,
+          title: currentActivity.title, 
+          description: currentActivity.description, 
+          status: false, 
+          deadline: currentActivity.deadline, 
+        }, localStorage.getItem('userLogged'))
+        setCurrentActivity(updatedActivity)
+      } else if (taskCounter !== checkedTasksCounter && currentActivity.status === false) {
+        const updatedActivity = await updateActivity({
+          id: currentActivity.id,
+          title: currentActivity.title, 
+          description: currentActivity.description, 
+          status: true, 
+          deadline: currentActivity.deadline, 
+        }, localStorage.getItem('userLogged'))
+        setCurrentActivity(updatedActivity)
+      }
       setReloadTasks(!reloadTasks)
     } catch (error) {
       console.log(error)

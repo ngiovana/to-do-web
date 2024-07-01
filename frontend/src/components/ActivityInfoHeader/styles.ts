@@ -18,8 +18,10 @@ export const ActivityInfoContainer = styled.div`
 
 export const TitleContainer = styled.div<TitleContainerProps>`
   display: flex;
-  flex-direction: column;
-  align-items: left;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 
   svg {
     color: ${props => props.showEditActivity ? 'var(--gray-8)' : 'var(--gray-1)'} ;

@@ -7,13 +7,11 @@ import styles from './TaskItem.module.css'
 interface Props {
   data: TaskType
   removeTask: (id: number) => void
-  toggleTaskStatus: ({ id, title, status }: { id: number; title: string; status: boolean }) => void
+  toggleTaskStatus: ({ id, title, status }: { id: string; title: string; status: boolean }) => void
 }
 
 export function TaskItem({ data, removeTask, toggleTaskStatus }: Props) {
-  console.log(data)
   function handleTaskToggle() {
-    console.log(data.status)
     toggleTaskStatus({ id: data.id, title: data.title, status: !data.status })
   }
 

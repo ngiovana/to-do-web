@@ -1,4 +1,4 @@
-import { CaretDoubleLeft, List, Circle, PencilSimple, Trash } from '@phosphor-icons/react'
+import { CaretDoubleLeft, List, Circle, PencilSimple, Trash, Check } from '@phosphor-icons/react'
 
 import { DoItem, MenuContainer, MenuHeader, ToItem, ItemContainer, Items, TodoContainer, ItemButtonsContainer } from './styles'
 import { useState, useEffect } from 'react'
@@ -24,7 +24,7 @@ export function SideMenu() {
       }
     }
     fetchData()
-  }, [userId, updateActivityList])
+  }, [userId, updateActivityList, currentActivity])
 
   const handleDeleteActivity = async (id: string) => {
     try {
@@ -62,7 +62,8 @@ export function SideMenu() {
                 isActive={currentActivity.id === activity.id}
                 onClick={() => setCurrentActivity(activity)}
               >
-                <Circle size={6} weight='fill' />
+                { !activity.status && <Circle size={6} weight='fill' /> }
+                { activity.status && <Check weight='bold' size={30} />}
                 <p>{activity.title}</p>
 
                 <ItemButtonsContainer>

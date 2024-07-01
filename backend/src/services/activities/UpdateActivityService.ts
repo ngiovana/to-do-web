@@ -9,7 +9,7 @@ interface UpdateActivityProps {
 }
 
 class UpdateActivityService {
-  async execute({ id, title, description, deadline, userId }: UpdateActivityProps) {
+  async execute({ id, title, description, deadline, status, userId }: UpdateActivityProps) {
     if (!id) {
       throw new Error("Solicitação inválida");
     }
@@ -41,7 +41,8 @@ class UpdateActivityService {
       data: {
         title,
         description,
-        deadline
+        deadline,
+        status
       }
     })
 

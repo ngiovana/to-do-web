@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 interface ActivityProps {
   id?: string,
   title: string,
+  status?: boolean,
   description?: string,
   deadline?: Date
 }
@@ -57,8 +58,8 @@ export function ActivityProvider({ children }: ActivityProviderProps) {
 
   const updateActivity = async (activity: ActivityProps, userId: string) => {
     try {
-      const response = await api.put(`/activity?id=${activity.id}`, {title: activity.title, description: activity.description, deadline: activity.deadline, userId})
-      if (response.data) return response.data.id;
+      const response = await api.put(`/activity?id=${activity.id}`, {title: activity.title, description: activity.description, status: activity.status, deadline: activity.deadline, userId})
+      if (response.data) return response.data;
     } catch (error) {
       console.error(error)
       throw new Error('Erro ao atualizar atividade: ' + error)
@@ -110,7 +111,7 @@ export function ActivityProvider({ children }: ActivityProviderProps) {
     showActivtyInput,
     setShowActivivtyInput,
     isMenuExpanded,
-    setIsMenuExpanded
+    setIsMenuExpanded,
   }
 
   useEffect(() => {

@@ -8,7 +8,7 @@ interface CreateActivityProps {
 }
 
 class CreateActivityService {
-  async execute({ title, description, deadline, userId }: CreateActivityProps) {
+  async execute({ title, description, deadline, status, userId }: CreateActivityProps) {
     
     if (!userId) {
       throw new Error('Usuário não encontrado')
@@ -33,6 +33,7 @@ class CreateActivityService {
         title,
         description,
         deadline,
+        status,
         userId
       }
     })
