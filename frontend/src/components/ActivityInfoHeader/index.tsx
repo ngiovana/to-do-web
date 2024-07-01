@@ -22,11 +22,11 @@ export function ActivityInfoHeader({ id, title, description, deadline }: Activit
 
   const userId = localStorage.getItem('userLogged') || userLogged?.id
 
-  const handleChangeDescription = (event: ChangeEvent<HTMLInputElement>) => {
-    event.target.setCustomValidity('')
-    // setIsEditingDescription(false)
-    setActivityDescription(event.target.value)
-  }
+  // const handleChangeDescription = (event: ChangeEvent<HTMLInputElement>) => {
+  //   event.target.setCustomValidity('')
+  //   // setIsEditingDescription(false)
+  //   setActivityDescription(event.target.value)
+  // }
 
   // const handleChangeDeadline = (event: ChangeEvent<HTMLInputElement>) => {
   //   event.target.setCustomValidity('')
@@ -41,6 +41,7 @@ export function ActivityInfoHeader({ id, title, description, deadline }: Activit
   //     const updatedActivity = await updateActivity({ id, title, description: activityDescription, deadline }, userId)
   //     const updatedActivitiesList = activities.map((activity) => (activity.id === updatedActivity.id ? updatedActivity : activity))
   //     setActivities(updatedActivitiesList)
+        // setActivityDescription('');
   //     setIsEditingData(false)
   //   } catch (error) {
   //     console.error(error)

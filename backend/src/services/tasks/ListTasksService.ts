@@ -17,7 +17,7 @@ class ListTasksService {
     })
 
     if (!tasks || tasks.length == 0) {
-      throw new Error('Não foi possível encontrar nenhuma tarefa')
+      return
     }
 
     return tasks

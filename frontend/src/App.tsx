@@ -5,6 +5,7 @@ import styles from './App.module.css';
 import './global.css';
 import { UserProvider } from './context/userContext';
 import { ActivityProvider } from './context/activityContext';
+import { TaskProvider } from './context/taskContext';
 
 function App() {
 
@@ -13,7 +14,9 @@ function App() {
       <BrowserRouter>
         <ActivityProvider>
           <UserProvider>
-            <Router />
+            <TaskProvider>
+              <Router />
+            </TaskProvider>
           </UserProvider>
         </ActivityProvider>
       </BrowserRouter> 

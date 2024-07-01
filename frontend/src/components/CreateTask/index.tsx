@@ -1,10 +1,12 @@
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { TaskItem } from '../TaskItem';
 import { Empty } from '../Empty';
 
 import { PlusCircle } from '@phosphor-icons/react';
 
 import { CountHeader, CreatedHeader, DoneHeader, TaskForm, TaskListWrapper, TasksWrapper, TasksHeader } from './styles'
+import { useTask } from '../../context/taskContext';
+import { useActivity } from '../../context/activityContext';
 
 export interface TaskType {
   id: number;
@@ -17,6 +19,19 @@ export function CreateTask() {
   const [newTaskText, setNewTaskText] = useState('');
   const taskCounter = tasks.length;
 
+  const { createTask, getActivityTasks } = useTask()
+  const { currentActivity } = useActivity()
+
+  useEffect(() => {
+    async function fetchData() {
+      if (!currentActivity) return
+      setTasks([])
+      const tasksList = await getActivityTasks(currentActivity.id)
+      if (tasksList) setTasks(tasksList)
+    }
+    fetchData()
+  }, [currentActivity])
+
   const checkedTasksCounter = tasks.reduce((prevValue, currentTask) => {
     if (currentTask.done) {
       return prevValue + 1
@@ -25,7 +40,7 @@ export function CreateTask() {
     return prevValue
   }, 0)
   
-  function handleCreateNewTask(event: FormEvent) {
+  async function handleCreateNewTask(event: FormEvent) {
     event.preventDefault();
 
     if (!newTaskText) {
@@ -39,6 +54,12 @@ export function CreateTask() {
     }
     
     setTasks((state) => [...state, newTask]);
+    try {
+      const createNewTask = await createTask({title: newTaskText, status: false}, currentActivity.id)
+    } catch (error) {
+      console.log(error)
+    }
+    
     setNewTaskText('');
   }
 
