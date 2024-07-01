@@ -19,7 +19,7 @@ interface ActivityContextType {
   currentActivity: ActivityProps;
   setCurrentActivity: Dispatch<SetStateAction<ActivityProps>>;
   createActivity: (activity: ActivityProps) => any;
-  updateActivity: (activity: ActivityProps) => void;
+  updateActivity: (activity: ActivityProps, userId: string) => void;
   deleteActivity: (id: string) => string;
   getActivity: (id: string) => void;
   getActivities:(userId: string) => any;
@@ -55,13 +55,13 @@ export function ActivityProvider({ children }: ActivityProviderProps) {
     }
   }
 
-  const updateActivity = async (user: ActivityProps) => {
+  const updateActivity = async (activity: ActivityProps, userId: string) => {
     try {
-      const response = await api.put(`/user?id=${user.id}`, user)
+      const response = await api.put(`/activity?id=${activity.id}`, {title: activity.title, description: activity.description, deadline: activity.deadline, userId})
       if (response.data) return response.data.id;
     } catch (error) {
       console.error(error)
-      throw new Error('Erro ao atualizar usuário: ' + error)
+      throw new Error('Erro ao atualizar atividade: ' + error)
     }
   }
 
@@ -84,7 +84,7 @@ export function ActivityProvider({ children }: ActivityProviderProps) {
 
   const getActivities = async (userId: string) => {
     console.log('getActivities')
-    if (!userId ) throw new Error('Usuário não encontrado')
+    if (!userId ) throw new Error('Atividade não encontrada')
 
     try {
       const response = await api.get(`/activities?userId=${userId}`)

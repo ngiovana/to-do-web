@@ -10,11 +10,11 @@ export function Header() {
   if (!currentActivity && activities) {
     setCurrentActivity(activities[0])
   }
-
+  
   return (
     <HeaderContainer>
       {currentActivity ? 
-        <ActivityInfoHeader title={currentActivity.title} description={currentActivity.description || ''} data={currentActivity.deadline} />
+        <ActivityInfoHeader id={currentActivity.id} title={currentActivity.title} description={currentActivity.description || ''} deadline={currentActivity.deadline} />
       :
         <AddFirstActivity />
       }

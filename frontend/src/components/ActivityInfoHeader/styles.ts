@@ -1,5 +1,9 @@
 import styled from 'styled-components'
 
+interface TitleContainerProps {
+  showEditActivity: boolean;
+}
+
 export const ActivityInfoContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -12,13 +16,14 @@ export const ActivityInfoContainer = styled.div`
   gap: 0.3rem;
 `
 
-export const TitleContainer = styled.div`
+export const TitleContainer = styled.div<TitleContainerProps>`
   display: flex;
-  align-items: center;
-  gap: 0.8rem;
+  flex-direction: column;
+  align-items: left;
 
   svg {
-    color: var(--gray-8);
+    color: ${props => props.showEditActivity ? 'var(--gray-8)' : 'var(--gray-1)'} ;
+    padding-left: 0.3rem;
   }
 
   svg:hover {
@@ -34,11 +39,9 @@ export const ActivityTitle = styled.h1`
   font-family: Archivo Black, sans-serif;
 `
 
-export const ActivityDescriptionView = styled.label`
-  cursor: pointer;
-`
+export const ActivityDescriptionView = styled.label``
 
-export const ActivityDescriptionInput = styled.input`
+export const ActivityInput = styled.input`
   height: 2rem;
   max-width: 20rem;
 
@@ -49,8 +52,6 @@ export const ActivityDescriptionInput = styled.input`
   border: 0;
 `
 
-export const ActivityDataView = styled.label`
-  cursor: pointer;
-`
+export const ActivityDataView = styled.label``
 
 export const AtivityDataInput = styled.label``
