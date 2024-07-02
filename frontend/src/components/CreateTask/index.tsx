@@ -34,7 +34,7 @@ export function CreateTask() {
 
   useEffect(() => {
     async function fetchData() {
-      if (!currentActivity) return
+      if (!currentActivity?.id) return
       try {
         setLoading(true)
         setTasks([])
@@ -97,8 +97,9 @@ export function CreateTask() {
     }
     try {
       await deleteTask(id, currentActivity.id)
+      setTaskCounter(0)
+      setCheckedTasksCounter(0)
       setReloadTasks(!reloadTasks)
-      // checkActivityStatus()
     } catch (error) {
       console.log(error)
     }
@@ -109,14 +110,13 @@ export function CreateTask() {
       await checkTask(id, title, status, currentActivity.id)
 
       setReloadTasks(!reloadTasks)
-      // checkActivityStatus()
     } catch (error) {
       console.log(error)
     }
   }
 
   async function checkActivityStatus() {
-    if (taskCounter === checkedTasksCounter) {
+    if (taskCounter === checkedTasksCounter && taskCounter > 0) {
       const updatedActivity = await updateActivity({
         id: currentActivity.id,
         title: currentActivity.title, 
@@ -125,7 +125,7 @@ export function CreateTask() {
         deadline: currentActivity.deadline, 
       }, localStorage.getItem('userLogged'))
       setCurrentActivity(updatedActivity)
-    } else if (taskCounter !== checkedTasksCounter && taskCounter > checkedTasksCounter) {
+    } else if (taskCounter !== checkedTasksCounter && taskCounter > checkedTasksCounter || taskCounter === 0) {
       const updatedActivity = await updateActivity({
         id: currentActivity.id,
         title: currentActivity.title, 

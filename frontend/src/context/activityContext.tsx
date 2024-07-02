@@ -84,7 +84,6 @@ export function ActivityProvider({ children }: ActivityProviderProps) {
   }
 
   const getActivities = async (userId: string) => {
-    console.log('getActivities')
     if (!userId ) throw new Error('Atividade não encontrada')
 
     try {
