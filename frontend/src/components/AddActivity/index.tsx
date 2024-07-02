@@ -37,7 +37,7 @@ export function AddActivty() {
       setCurrentActivity(newActivity)
       localStorage.setItem('currentActivityId', newActivity.id)
       setActivities([...activities, newActivity])
-      // qualquer coisa dar um reload no window pra carregar a lista atualizada
+      setTitle('')
     } catch (error) {
       console.error(error)
     }

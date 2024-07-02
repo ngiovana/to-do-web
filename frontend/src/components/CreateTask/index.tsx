@@ -7,6 +7,7 @@ import { PlusCircle } from '@phosphor-icons/react';
 import { CountHeader, CreatedHeader, DoneHeader, TaskForm, TaskListWrapper, TasksWrapper, TasksHeader } from './styles'
 import { useTask } from '../../context/taskContext';
 import { useActivity } from '../../context/activityContext';
+import { CircularProgress } from '@mui/material';
 
 export interface TaskType {
   id: number;
@@ -18,7 +19,15 @@ export function CreateTask() {
   const [tasks, setTasks] = useState<TaskType[]>([]);
   const [newTaskText, setNewTaskText] = useState('');
   const [reloadTasks, setReloadTasks] = useState(false)
-  const taskCounter = tasks.length;
+  const [loading, setLoading] = useState(false)
+  const [taskCounter, setTaskCounter] = useState(tasks.length);
+  const [checkedTasksCounter, setCheckedTasksCounter] = useState(tasks.reduce((prevValue, currentTask) => {
+    if (currentTask.status) {
+      return prevValue + 1
+    }
+
+    return prevValue
+  }, 0))
 
   const { createTask, getActivityTasks, deleteTask, checkTask } = useTask()
   const { currentActivity, updateActivity, setCurrentActivity } = useActivity()
@@ -26,20 +35,36 @@ export function CreateTask() {
   useEffect(() => {
     async function fetchData() {
       if (!currentActivity) return
-      setTasks([])
-      const tasksList = await getActivityTasks(currentActivity.id)
-      if (tasksList) setTasks(tasksList)
+      try {
+        setLoading(true)
+        setTasks([])
+        const tasksList = await getActivityTasks(currentActivity.id)
+        if (tasksList) {
+          setTasks(tasksList)
+          setTaskCounter(tasksList.length)
+          setCheckedTasksCounter(tasksList.reduce((prevValue: number, currentTask: TaskType) => {
+            if (currentTask.status) {
+              return prevValue + 1
+            }
+        
+            return prevValue
+          }, 0))
+        }
+      } catch (error) {
+        console.log(error)
+      } finally {
+        setTimeout(() => {
+          setLoading(false)
+        }, 500)
+      }
+      
     }
     fetchData()
   }, [currentActivity, reloadTasks])
 
-  const checkedTasksCounter = tasks.reduce((prevValue, currentTask) => {
-    if (currentTask.status) {
-      return prevValue + 1
-    }
-
-    return prevValue
-  }, 0)
+  useEffect(() => {
+    checkActivityStatus()
+  }, [checkedTasksCounter, taskCounter])
   
   async function handleCreateNewTask(event: FormEvent) {
     event.preventDefault();
@@ -51,6 +76,7 @@ export function CreateTask() {
     try {
       const newTask = await createTask({title: newTaskText, status: false}, currentActivity.id)
       setTasks((state) => [...state, newTask])
+      setReloadTasks(!reloadTasks)
       checkActivityStatus()
     } catch (error) {
       console.log(error)
@@ -71,8 +97,8 @@ export function CreateTask() {
     }
     try {
       await deleteTask(id, currentActivity.id)
-      checkActivityStatus()
       setReloadTasks(!reloadTasks)
+      // checkActivityStatus()
     } catch (error) {
       console.log(error)
     }
@@ -82,24 +108,16 @@ export function CreateTask() {
     try {
       await checkTask(id, title, status, currentActivity.id)
 
-      checkActivityStatus()
       setReloadTasks(!reloadTasks)
+      // checkActivityStatus()
     } catch (error) {
       console.log(error)
     }
   }
 
   async function checkActivityStatus() {
+    debugger;
     if (taskCounter === checkedTasksCounter) {
-      const updatedActivity = await updateActivity({
-        id: currentActivity.id,
-        title: currentActivity.title, 
-        description: currentActivity.description, 
-        status: false, 
-        deadline: currentActivity.deadline, 
-      }, localStorage.getItem('userLogged'))
-      setCurrentActivity(updatedActivity)
-    } else if (taskCounter !== checkedTasksCounter && currentActivity.status === false) {
       const updatedActivity = await updateActivity({
         id: currentActivity.id,
         title: currentActivity.title, 
@@ -108,8 +126,19 @@ export function CreateTask() {
         deadline: currentActivity.deadline, 
       }, localStorage.getItem('userLogged'))
       setCurrentActivity(updatedActivity)
+    } else if (taskCounter !== checkedTasksCounter && taskCounter > checkedTasksCounter) {
+      const updatedActivity = await updateActivity({
+        id: currentActivity.id,
+        title: currentActivity.title, 
+        description: currentActivity.description, 
+        status: false, 
+        deadline: currentActivity.deadline, 
+      }, localStorage.getItem('userLogged'))
+      setCurrentActivity(updatedActivity)
     }
   }
+
+  if (loading) return <CircularProgress color='error' style={{display: 'flex', margin: '12rem auto'}}/>
 
   return (
     <div>

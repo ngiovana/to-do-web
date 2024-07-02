@@ -11,7 +11,7 @@ export const ActivityInfoContainer = styled.div`
   color: var(--gray-11);
   font-size: 0.9rem;
 
-  max-width: 20rem;
+  max-width: 30rem;
 
   gap: 0.3rem;
 `

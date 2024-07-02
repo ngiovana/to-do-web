@@ -77,7 +77,7 @@ export function UserProvider({ children }: UserProviderProps) {
   const logoutUser = () => {
     setUserLogged('')
     setActivities([])
-    setCurrentActivity(undefined)
+    setCurrentActivity({id: '', title: ''})
     localStorage.removeItem('userLogged')
     navigate('/login')
   }

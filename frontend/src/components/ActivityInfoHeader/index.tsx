@@ -1,6 +1,6 @@
-import { ChangeEvent, useState } from 'react'
-import { Check, PencilSimple, X } from '@phosphor-icons/react'
-import { ActivityDescriptionView, ActivityTitle, ActivityInfoContainer, TitleContainer, ActivityInput } from './styles'
+import { useState } from 'react'
+import { Check } from '@phosphor-icons/react'
+import { ActivityTitle, ActivityInfoContainer, TitleContainer } from './styles'
 import { useActivity } from '../../context/activityContext'
 import { useUser } from '../../context/userContext'
 
@@ -18,10 +18,10 @@ export function ActivityInfoHeader({ id, title, description, status, deadline }:
   const [activityDescription, setActivityDescription] = useState(description || '')
   // const [activityDeadline, setActivityDeadline] = useState(deadline || new Date())
 
-  const { updateActivity, activities, setActivities } = useActivity()
+  // const { updateActivity, activities, setActivities } = useActivity()
   const { userLogged } = useUser()
 
-  const userId = localStorage.getItem('userLogged') || userLogged?.id
+  // const userId = localStorage.getItem('userLogged') || userLogged?.id
 
   // const handleChangeDescription = (event: ChangeEvent<HTMLInputElement>) => {
   //   event.target.setCustomValidity('')
