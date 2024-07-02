@@ -116,7 +116,6 @@ export function CreateTask() {
   }
 
   async function checkActivityStatus() {
-    debugger;
     if (taskCounter === checkedTasksCounter) {
       const updatedActivity = await updateActivity({
         id: currentActivity.id,
