@@ -133,13 +133,14 @@ export function CreateTask() {
 
   return (
     <div>
-      <TaskForm onSubmit={handleCreateNewTask}>
+      <TaskForm onSubmit={handleCreateNewTask} disabled={!currentActivity}>
         <input 
           value={newTaskText} 
           onChange={handleNewTaskChange}
           placeholder='Adicione uma nova tarefa'
+          disabled={!currentActivity}
         />
-        <button type='submit'>
+        <button type='submit' >
           Criar
           <PlusCircle size={16} color="#f2f2f2" weight="bold" />
         </button>

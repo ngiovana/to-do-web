@@ -1,6 +1,10 @@
 import styled from 'styled-components'
 
-export const TaskForm = styled.form`
+interface TaskFormProps {
+  disabled: boolean;
+}
+
+export const TaskForm = styled.form<TaskFormProps>`
   min-width: 46rem;
   
   input {
@@ -26,7 +30,7 @@ export const TaskForm = styled.form`
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    cursor: pointer;
+    cursor: ${props => props.disabled ? 'not-allowed' : 'pointer'};
   }
 
   button:hover {
