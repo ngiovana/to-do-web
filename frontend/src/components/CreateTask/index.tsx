@@ -19,7 +19,6 @@ export function CreateTask() {
   const [tasks, setTasks] = useState<TaskType[]>([]);
   const [newTaskText, setNewTaskText] = useState('');
   const [reloadTasks, setReloadTasks] = useState(false)
-  const [loading, setLoading] = useState(false)
   const [taskCounter, setTaskCounter] = useState(tasks.length);
   const [checkedTasksCounter, setCheckedTasksCounter] = useState(tasks.reduce((prevValue, currentTask) => {
     if (currentTask.status) {

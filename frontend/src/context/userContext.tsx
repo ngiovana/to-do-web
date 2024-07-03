@@ -53,7 +53,6 @@ export function UserProvider({ children }: UserProviderProps) {
       const response = await api.put(`/user?id=${user.id}`, user)
       if (response.data) return response.data.id;
     } catch (error) {
-      console.error(error)
       throw new Error('Erro ao atualizar usuário: ' + error)
     }
   }
@@ -69,7 +68,6 @@ export function UserProvider({ children }: UserProviderProps) {
       if (response.data) return response.data.id;
       throw new Error('Email ou senha inválidos')
     } catch (error) {
-      console.error(error)
       throw new Error('Erro ao logar usuário: ' + error)
     }
   }

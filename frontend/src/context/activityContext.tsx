@@ -21,7 +21,7 @@ interface ActivityContextType {
   setCurrentActivity: Dispatch<SetStateAction<ActivityProps>>;
   createActivity: (activity: ActivityProps) => any;
   updateActivity: (activity: ActivityProps, userId: string) => void;
-  deleteActivity: (id: string) => string;
+  deleteActivity: (id: string, userId: string) => string;
   getActivity: (id: string) => void;
   getActivities:(userId: string) => any;
   showActivtyInput: boolean;
