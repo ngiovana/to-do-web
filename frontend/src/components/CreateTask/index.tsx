@@ -36,8 +36,6 @@ export function CreateTask() {
     async function fetchData() {
       if (!currentActivity?.id) return
       try {
-        setLoading(true)
-        setTasks([])
         const tasksList = await getActivityTasks(currentActivity.id)
         if (tasksList) {
           setTasks(tasksList)
@@ -52,10 +50,6 @@ export function CreateTask() {
         }
       } catch (error) {
         console.log(error)
-      } finally {
-        setTimeout(() => {
-          setLoading(false)
-        }, 500)
       }
       
     }
@@ -136,8 +130,6 @@ export function CreateTask() {
       setCurrentActivity(updatedActivity)
     }
   }
-
-  if (loading) return <CircularProgress color='error' style={{display: 'flex', margin: '12rem auto'}}/>
 
   return (
     <div>
