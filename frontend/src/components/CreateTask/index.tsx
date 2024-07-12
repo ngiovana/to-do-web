@@ -36,7 +36,7 @@ export function CreateTask() {
       if (!currentActivity?.id) return
       try {
         const tasksList = await getActivityTasks(currentActivity.id)
-        if (tasksList) {
+        if (tasksList.length > 0) {
           setTasks(tasksList)
           setTaskCounter(tasksList.length)
           setCheckedTasksCounter(tasksList.reduce((prevValue: number, currentTask: TaskType) => {
@@ -46,7 +46,11 @@ export function CreateTask() {
         
             return prevValue
           }, 0))
+          return
         }
+        setTasks([])
+        setTaskCounter(0)
+        setCheckedTasksCounter(0)
       } catch (error) {
         console.log(error)
       }
