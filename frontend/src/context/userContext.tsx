@@ -20,8 +20,12 @@ interface UserContextType {
   setUserLogged: Dispatch<SetStateAction<string>>;
   createUser: (user: UserProps) => void;
   updateUser: (user: UserProps) => void;
-  loginUser: (email: string, password: string) => string;
+  loginUser: (email: string, password: string) => Promise<string>;
   logoutUser: () => void;
+}
+
+interface LoginResponse {
+  id: string;
 }
 
 export const UserContext = createContext<UserContextType | undefined>(undefined)
@@ -42,7 +46,7 @@ export function UserProvider({ children }: UserProviderProps) {
       const newUser = response.data
 
       setUsers([...users, newUser])
-    } catch (error: any) {
+    } catch (error) {
       console.error('Error creating user:', error)
       throw new Error(error.response.data.message || 'Erro ao criar usuário')
     }
@@ -58,14 +62,13 @@ export function UserProvider({ children }: UserProviderProps) {
   }
 
   const loginUser = async (email: string, password: string) => {
-    // adicionar validação nas rotas com o userLogged
     try {
-      const response = await api.post('/user/login', { 
+      const response = await api.post<LoginResponse>('/user/login', { 
         email, 
         password 
       })
   
-      if (response.data) return response.data.id;
+      if (response.data) return response.data.id.toString();
       throw new Error('Email ou senha inválidos')
     } catch (error) {
       throw new Error('Erro ao logar usuário: ' + error)

@@ -1,8 +1,6 @@
 import { useState } from 'react'
 import { Check } from '@phosphor-icons/react'
 import { ActivityTitle, ActivityInfoContainer, TitleContainer } from './styles'
-import { useActivity } from '../../context/activityContext'
-import { useUser } from '../../context/userContext'
 
 interface ActivityInfoHeaderProps {
   id: string
@@ -12,14 +10,8 @@ interface ActivityInfoHeaderProps {
   deadline: Date,
 }
 
-export function ActivityInfoHeader({ id, title, description, status, deadline }: ActivityInfoHeaderProps) {
-  const [isEditingData, setIsEditingData] = useState(false)
+export function ActivityInfoHeader({ title, status }: ActivityInfoHeaderProps) {
   const [showEditActivity, setShowEditActivity] = useState(false)
-  const [activityDescription, setActivityDescription] = useState(description || '')
-  // const [activityDeadline, setActivityDeadline] = useState(deadline || new Date())
-
-  // const { updateActivity, activities, setActivities } = useActivity()
-  const { userLogged } = useUser()
 
   // const userId = localStorage.getItem('userLogged') || userLogged?.id
 
@@ -57,20 +49,20 @@ export function ActivityInfoHeader({ id, title, description, status, deadline }:
         <ActivityTitle>{title}</ActivityTitle>
         { status && <Check color='#65960b' weight='bold' size={24} />}
       </TitleContainer>
-      {isEditingData ? (
-        <>
+      {/* {isEditingData ? ( */}
+        {/* <> */}
           {/* <form onSubmit={handleUpdateActivity}> */}
             {/* <ActivityInput value={activityDescription} type='text' placeholder='Nova descrição...' onChange={handleChangeDescription} /> */}
             {/* <ActivityInput value={format(activityDeadline, 'dd/MM/yyyy')} onChange={handleChangeDeadline} /> */}
             {/* <button type='submit'>Salvar</button> */}
           {/* </form> */}
-        </>
-      ) : (
-        <>
+        {/* </> */}
+      {/* ) : ( */}
+        {/* <> */}
           {/* <ActivityDescriptionView>{activityDescription}</ActivityDescriptionView> */}
           {/* <ActivityDataView>{'Prazo: ' + format(activityDeadline, 'dd/MM/yyyy')}</ActivityDataView> */}
-        </>
-      )}
+        {/* </> */}
+      {/* )} */}
       
       
     </ActivityInfoContainer>

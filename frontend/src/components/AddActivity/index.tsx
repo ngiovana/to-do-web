@@ -1,6 +1,6 @@
 import { PlusCircle } from "@phosphor-icons/react";
 import { AddItemContainer, InputContainer } from "./styles";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import { useActivity } from "../../context/activityContext";
 import { useUser } from "../../context/userContext";
 
@@ -24,7 +24,7 @@ export function AddActivty() {
     console.log('Add activity clicked')
   }
 
-  const handleCreateActivity = async (event: ChangeEvent<HTMLInputElement>) => {
+  const handleCreateActivity = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
     setShowActivivtyInput(false)
@@ -35,7 +35,7 @@ export function AddActivty() {
 
       const newActivity = await createActivity({ title, userId })
       setCurrentActivity(newActivity)
-      localStorage.setItem('currentActivityId', newActivity.id)
+      localStorage.setItem('currentActivityId', newActivity.id || '')
       setActivities([...activities, newActivity])
       setTitle('')
     } catch (error) {

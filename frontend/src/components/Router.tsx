@@ -9,7 +9,7 @@ export function Router() {
   return (
     <Routes>
       <Route path="/login" element={<LoginPage />} />
-      <Route element={<ProtectedRoute />}>
+      <Route element={<ProtectedRoute children={undefined} />}>
         <Route path="/usuario/editar" element={<UserEdit />} />
         <Route path="/" element={<DefaultLayout />}>
           <Route path="/" element={<ActivityView />} />

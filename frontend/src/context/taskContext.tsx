@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, ReactNode, Dispatch, SetStateAction, useEffect } from 'react'
+import { createContext, useContext, ReactNode } from 'react'
 import { api } from '../services/api';
 
 interface TaskProps {
@@ -11,13 +11,19 @@ interface TaskProviderProps {
   children: ReactNode
 }
 
+export interface TaskType {
+  id: number;
+  title: string;  
+  status: boolean;
+}
+
 interface TaskContextType {
-  activityTasks: TaskProps[];
-  setActivityTasks: Dispatch<SetStateAction<TaskProps[]>>;
-  getActivityTasks: (activityId: string) => any;
-  checkTask: (id: string, title: string, status: boolean, activityId: string) => any;
-  createTask: (activity: TaskProps) => any;
-  deleteTask: (id: string) => string;
+  // activityTasks: TaskProps[];
+  // setActivityTasks: Dispatch<SetStateAction<TaskProps[]>>;
+  getActivityTasks: (activityId: string) => Promise<TaskType[]>;
+  checkTask: (id: number, title: string, status: boolean, activityId: string) => unknown;
+  createTask: (task: TaskProps, activityId: string) => Promise<TaskType>;
+  deleteTask: (id: number, activityId: string) => unknown;
 }
 
 export const TaskContext = createContext<TaskContextType | undefined>(undefined)
@@ -28,11 +34,11 @@ export function TaskProvider({ children }: TaskProviderProps) {
     if (!task || !task.title ) throw new Error('Informe o título da Tarefa')
 
     try {
-      const response = await api.post('/task', {title: task.title, status: task.status, activityId})
+      const response = await api.post<TaskType>('/task', {title: task.title, status: task.status, activityId})
       const newTask = response.data
 
       return newTask
-    } catch (error: any) {
+    } catch (error) {
       console.error('Error creating task:', error)
       throw new Error(error.response.data.message || 'Erro ao criar Tarefa')
     }
@@ -40,7 +46,7 @@ export function TaskProvider({ children }: TaskProviderProps) {
 
   const getActivityTasks = async (activityId: string) => {
     try {
-      const response = await api.get(`/tasks?activityId=${activityId}`)
+      const response = await api.get<TaskType[]>(`/tasks?activityId=${activityId}`)
       const taskList = response.data
 
       return taskList
@@ -50,7 +56,7 @@ export function TaskProvider({ children }: TaskProviderProps) {
     }
   }
 
-  const deleteTask = async (id: string, activityId: string) => {
+  const deleteTask = async (id: number, activityId: string) => {
     try {
       const response = await api.delete(`/task?id=${id}&activityId=${activityId}`)
       const deletedTask = response.data
@@ -62,7 +68,7 @@ export function TaskProvider({ children }: TaskProviderProps) {
     }
   }
 
-  const checkTask = async (id: string, title: string, status: boolean, activityId: string) => {
+  const checkTask = async (id: number, title: string, status: boolean, activityId: string) => {
     try {
       const response = await api.put(`/task?id=${id}`, {id, title, status, activityId})
       const updatedTask = response.data

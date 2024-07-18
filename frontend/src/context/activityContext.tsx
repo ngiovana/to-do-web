@@ -1,13 +1,13 @@
 import { createContext, useContext, useState, ReactNode, Dispatch, SetStateAction, useEffect } from 'react'
 import { api } from '../services/api';
-import { useNavigate } from 'react-router-dom';
 
 interface ActivityProps {
   id?: string,
   title: string,
   status?: boolean,
   description?: string,
-  deadline?: Date
+  deadline?: Date,
+  userId?: string
 }
 
 interface ActivityProviderProps {
@@ -19,11 +19,11 @@ interface ActivityContextType {
   setActivities: Dispatch<SetStateAction<ActivityProps[]>>;
   currentActivity: ActivityProps;
   setCurrentActivity: Dispatch<SetStateAction<ActivityProps>>;
-  createActivity: (activity: ActivityProps) => any;
-  updateActivity: (activity: ActivityProps, userId: string) => void;
-  deleteActivity: (id: string, userId: string) => string;
+  createActivity: (activity: ActivityProps) => Promise<ActivityProps>;
+  updateActivity: (activity: ActivityProps, userId: string) => Promise<ActivityProps | undefined>;
+  deleteActivity: (id: string, userId: string) => unknown;
   getActivity: (id: string) => void;
-  getActivities:(userId: string) => any;
+  getActivities:(userId: string) => unknown;
   showActivtyInput: boolean;
   setShowActivivtyInput: Dispatch<SetStateAction<boolean>>;
   isMenuExpanded: boolean;
@@ -34,23 +34,21 @@ export const ActivityContext = createContext<ActivityContextType | undefined>(un
 
 export function ActivityProvider({ children }: ActivityProviderProps) {
   const [activities, setActivities] = useState<ActivityProps[]>([])
-  const [currentActivity, setCurrentActivity] = useState('')
+  const [currentActivity, setCurrentActivity] = useState({title: ''})
   const [showActivtyInput, setShowActivivtyInput] = useState(false)
   const [isMenuExpanded, setIsMenuExpanded] = useState(false)
-
-  const navigate = useNavigate()
 
   const createActivity = async (activity: ActivityProps) => {
     if (!activity || !activity.title ) throw new Error('Informe o título da Atividade')
 
     try {
-      const response = await api.post('/activity', activity)
+      const response = await api.post<ActivityProps>('/activity', activity)
       const newActivity = response.data
 
       setActivities([...activities, newActivity])
 
       return newActivity
-    } catch (error: any) {
+    } catch (error) {
       console.error('Error creating activity:', error)
       throw new Error(error.response.data.message || 'Erro ao criar atividade')
     }
@@ -58,7 +56,7 @@ export function ActivityProvider({ children }: ActivityProviderProps) {
 
   const updateActivity = async (activity: ActivityProps, userId: string) => {
     try {
-      const response = await api.put(`/activity?id=${activity.id}`, {title: activity.title, description: activity.description, status: activity.status, deadline: activity.deadline, userId})
+      const response = await api.put<ActivityProps>(`/activity?id=${activity.id}`, {title: activity.title, description: activity.description, status: activity.status, deadline: activity.deadline, userId})
       if (response.data) return response.data;
     } catch (error) {
       console.error(error)

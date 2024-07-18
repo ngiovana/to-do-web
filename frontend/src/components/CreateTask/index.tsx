@@ -7,8 +7,6 @@ import { PlusCircle } from '@phosphor-icons/react';
 import { CountHeader, CreatedHeader, DoneHeader, TaskForm, TaskListWrapper, TasksWrapper, TasksHeader } from './styles'
 import { useTask } from '../../context/taskContext';
 import { useActivity } from '../../context/activityContext';
-import { CircularProgress } from '@mui/material';
-
 export interface TaskType {
   id: number;
   title: string;  
@@ -71,7 +69,7 @@ export function CreateTask() {
     }
     
     try {
-      const newTask = await createTask({title: newTaskText, status: false}, currentActivity.id)
+      const newTask = await createTask({title: newTaskText, status: false}, currentActivity.id || '')
       setTasks((state) => [...state, newTask])
       setReloadTasks(!reloadTasks)
       checkActivityStatus()
@@ -93,7 +91,7 @@ export function CreateTask() {
       return
     }
     try {
-      await deleteTask(id, currentActivity.id)
+      await deleteTask(id, currentActivity.id || '')
       setTaskCounter(0)
       setCheckedTasksCounter(0)
       setReloadTasks(!reloadTasks)
@@ -102,9 +100,9 @@ export function CreateTask() {
     }
   }
 
-  async function handleToggleTask({ id, title, status }: { id: string; title: string; status: boolean }) {
+  async function handleToggleTask({ id, title, status }: { id: number; title: string; status: boolean }) {
     try {
-      await checkTask(id, title, status, currentActivity.id)
+      await checkTask(id, title, status, currentActivity.id || '')
 
       setReloadTasks(!reloadTasks)
     } catch (error) {
@@ -120,8 +118,8 @@ export function CreateTask() {
         description: currentActivity.description, 
         status: true, 
         deadline: currentActivity.deadline, 
-      }, localStorage.getItem('userLogged'))
-      setCurrentActivity(updatedActivity)
+      }, localStorage.getItem('userLogged') || '')
+      setCurrentActivity(updatedActivity || {title: ''})
     } else if (taskCounter !== checkedTasksCounter && taskCounter > checkedTasksCounter || taskCounter === 0) {
       const updatedActivity = await updateActivity({
         id: currentActivity.id,
@@ -129,8 +127,8 @@ export function CreateTask() {
         description: currentActivity.description, 
         status: false, 
         deadline: currentActivity.deadline, 
-      }, localStorage.getItem('userLogged'))
-      setCurrentActivity(updatedActivity)
+      }, localStorage.getItem('userLogged') || '')
+      setCurrentActivity(updatedActivity || {title: ''})
     }
   }
 

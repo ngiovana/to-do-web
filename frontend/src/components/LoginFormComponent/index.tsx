@@ -34,7 +34,7 @@ export function LoginFormComponent({ onCreateClick, isActive }: LoginFormCompone
   const handleLogin = async (event: ChangeEvent<HTMLInputElement>) => {
     event.preventDefault()
     try {
-      const userId = await loginUser(email, password)
+      const userId: string = await loginUser(email, password)
 
       setUserLogged(userId)
       localStorage.setItem('userLogged', userId)

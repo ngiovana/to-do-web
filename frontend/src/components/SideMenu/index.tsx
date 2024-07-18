@@ -1,4 +1,4 @@
-import { CaretDoubleLeft, List, Circle, PencilSimple, Trash, Check } from '@phosphor-icons/react'
+import { CaretDoubleLeft, List, Circle, Trash, Check } from '@phosphor-icons/react'
 
 import { DoItem, MenuContainer, MenuHeader, ToItem, ItemContainer, Items, TodoContainer, ItemButtonsContainer } from './styles'
 import { useState, useEffect } from 'react'
@@ -16,7 +16,7 @@ export function SideMenu() {
   const { userLogged } = useUser()
   const { activities, setCurrentActivity, currentActivity, getActivities, setActivities, deleteActivity, isMenuExpanded, setIsMenuExpanded } = useActivity()
 
-  const userId = localStorage.getItem('userLogged') || userLogged
+  const userId = localStorage.getItem('userLogged') || userLogged || ''
 
   useEffect(() => {
     async function fetchData() {
@@ -74,7 +74,7 @@ export function SideMenu() {
                   <ItemButtonsContainer>
                     {/* melhor editar com dois cliques  */}
                     {/* <PencilSimple size={16} style={{ cursor: 'pointer' }} weight='bold' /> */} 
-                    <Trash size={16} style={{ cursor: 'pointer', width: '1rem' }} weight='bold' onClick={() => handleDeleteActivity(activity.id)} />
+                    <Trash size={16} style={{ cursor: 'pointer', width: '1rem' }} weight='bold' onClick={() => handleDeleteActivity(activity.id || '')} />
                   </ItemButtonsContainer>
                 </ItemContainer>
               ))}

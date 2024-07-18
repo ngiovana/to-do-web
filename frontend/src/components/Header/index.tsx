@@ -14,7 +14,7 @@ export function Header() {
   return (
     <HeaderContainer>
       {currentActivity?.id ? 
-        <ActivityInfoHeader id={currentActivity.id} title={currentActivity.title} status={currentActivity.status || false} description={currentActivity.description || ''} deadline={currentActivity.deadline} />
+        <ActivityInfoHeader id={currentActivity.id} title={currentActivity.title} status={currentActivity.status || false} description={currentActivity.description || ''} deadline={currentActivity.deadline || new Date()} />
       :
         <AddFirstActivity />
       }
