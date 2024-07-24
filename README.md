@@ -6,8 +6,7 @@
 ![Bitbucket open issues](https://img.shields.io/bitbucket/issues/ngiovana/to-do-web?style=for-the-badge)
 ![Bitbucket open pull requests](https://img.shields.io/bitbucket/pr-raw/ngiovana/to-do-web?style=for-the-badge)
 
-<img src="todo_login.png" alt="Login ToDo">
-<img src="todo_listagem.png" alt="Login ToDo">
+<img src="./todo_login.png" alt="Login ToDo">
 
 > Um website de gerenciamento de tarefas criado para ajudar na organização diária. Permite criar, editar e marcar atividades e tarefas como concluídas. Desenvolvido para um projeto acadêmico, explorando abordagens de design minimalista.
 
@@ -66,7 +65,7 @@ Para usar ToDo, siga os passos de instalação e inicie a aplicação com o segu
 npm run dev
 ```
 
-<img src="todo.gif" alt="interface ToDo">
+<img src="./assets/todo.gif" alt="interface ToDo">
 
 <!-- MARKDOWN LINKS & IMAGES -->
 [React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
