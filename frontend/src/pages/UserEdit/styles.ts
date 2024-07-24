@@ -7,6 +7,7 @@ export const EditUserContainer = styled.div`
   justify-content: center;
 
   background-color: var(--gray-2);
+  height: 100vh;
 `
 
 export const EdisUserCard = styled.div`
